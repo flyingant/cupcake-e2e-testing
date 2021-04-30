@@ -1,0 +1,12 @@
+import MockableTestCase from "../src/MockableTestCase";
+
+// https://teamsolace.atlassian.net/browse/%ID%
+class TestCase extends MockableTestCase {
+  createTestSteps(): void {
+    this.addTestStep('Test step 1', async () => {
+      throw new Error("not implemented yet");
+    });
+  }
+}
+new TestCase('%ID%', '%TITLE%');
+
