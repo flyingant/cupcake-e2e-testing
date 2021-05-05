@@ -60,7 +60,7 @@ export default class AddPatientPage extends TestComponent {
     }
 
     async clickYesCancel() {
-        await this.tab.click("text='YES, CANCEL'");
+        await this.tab.click("text='Yes, cancel'");
     }
 
     async clickNextButton() {
