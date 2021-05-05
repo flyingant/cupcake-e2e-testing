@@ -48,6 +48,10 @@ export default class LoginPage extends TestComponent {
     await this.setEmailAndPassword(username, password);
     await this.submit();
   }
+
+  async waitForForgotPassword(){
+    await this.tab.waitForSelector(':text("Forgot password")');
+  }
   
   async clickForgotPassword(){
     await this.tab.click(':text("Forgot password")');

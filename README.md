@@ -21,6 +21,7 @@ Stable Paient Data to test the Web UI
 | Account |Name  | Phone |D.O.B  |Gender  |Stage  |
 | --- | --- | --- | --- | --- | --- |
 | 103 | Test008 Test008 | 888 888 8888 | 01.01.2000 | Male | candidate |
+| 103 | Test007 Test007 | 123 456 7890 | 04.29.2021 | Other | SCHEDULED TRIAL |
 
 ## Installation
 The project is based on NodeJS and test scripts are written with Playwright framework and run the by Jest.

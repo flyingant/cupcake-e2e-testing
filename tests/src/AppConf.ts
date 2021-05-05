@@ -95,4 +95,27 @@ export default class AppConf {
     static getStableAccountPassword() {
       return this.PASSWORD_03;
     }
+
+    static getStablePatient(name: string) {
+      // Here set up severial patient for specific UI testing
+      /**
+       * Account: shiiah1208+103@gmail.com
+       * Patient Name: Test008
+       * Stage: Candidate
+       * Tips: NO data changes is allowed, all field are with default status, only for UI checks
+       */
+      /**
+       * Account: shiiah1208+103@gmail.com
+       * Patient Name: Test007
+       * Stage: Scheduled Trial
+       * Tips: Able to save changes, but not allow to change the first name
+       */
+      /**
+       * Account: shiiah1208+103@gmail.com
+       * Patient Name: Test006
+       * Stage: In Trial
+       * Tips: Able to save changes, but not allow to change the first name
+       */
+      return name;
+    }
 }

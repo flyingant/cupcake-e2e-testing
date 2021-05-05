@@ -3,6 +3,6 @@
 module.exports = {
   browsers: process.env.browsers ? process.env.browsers.split(',') : ["chromium"/*, "firefox", "webkit"*/],
   launchOptions: {
-    headless: false
+    headless: process.env.headless === 'true'
   }
 }

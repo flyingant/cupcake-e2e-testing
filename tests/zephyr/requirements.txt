@@ -1,5 +1,2 @@
-Appium-Python-Client
-getgauge
-colorama
+requests
 PyJWT
-selenium

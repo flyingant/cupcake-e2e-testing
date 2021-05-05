@@ -79,6 +79,10 @@ export default class PatientDetailPage extends TestComponent {
       await this.tab.click(`button:right-of(button:has-text("Save Changes"))`)
     }
 
+    async clickCloseBtn() {
+      await this.tab.click(`[class*=styles_details-header__buttons] button`)
+    }
+
     async clickClearEntry(){
         await this.tab.click("'Clear Entry'")
     }
@@ -129,6 +133,10 @@ export default class PatientDetailPage extends TestComponent {
     async waitForDOB() {
       await this.tab.waitForSelector("#dob");
       await this.tab.click("#dob");
+    }
+
+    async fillDOB(date: string) {
+      await this.tab.fill('input[id="dob"]', date);
     }
 
     async getValueOfDOB() {
@@ -332,6 +340,12 @@ export default class PatientDetailPage extends TestComponent {
     async waitForImplantConsultDatePicker() {
       await (await this.tab.waitForSelector(".react-datepicker")).scrollIntoViewIfNeeded();
     }
+
+    async getValueOfImplantConsult() :Promise<string> {
+      const implant_consult = await this.tab.innerText('button:below(label:has-text("implant consult"))');
+      return implant_consult
+   }
+
     // Implant Consult Section - Patient Details ---------------------------------------
 
     // Trial Date Section - Patient Details ---------------------------------------
@@ -350,6 +364,34 @@ export default class PatientDetailPage extends TestComponent {
     async waitForTrailDateDatePicker() {
       await (await this.tab.waitForSelector(".react-datepicker")).scrollIntoViewIfNeeded();
     }
+
+    async getValueOfTrailDate() :Promise<string> {
+      const value = await this.tab.innerText('button:below(label:has-text("trial date"))');
+      return value
+   }
+    // Trial Date Section - Patient Details ---------------------------------------
+
+    // Surgery Date Section - Patient Details ---------------------------------------
+    async waitForSurgeryDateLabel() {
+      await (await this.tab.waitForSelector(`label:has-text("surgery date")`)).scrollIntoViewIfNeeded();
+    }
+
+    async waitForSurgeryDateScheduleBtn() {
+      await (await this.tab.waitForSelector(`button:below(label:has-text("surgery date"))`)).scrollIntoViewIfNeeded();
+    }
+
+    async clickSurgeryDateScheduleBtn() {
+      await this.tab.click('button:below(label:has-text("surgery date"))');
+    }
+
+    async waitForSurgeryDateDatePicker() {
+      await (await this.tab.waitForSelector(".react-datepicker")).scrollIntoViewIfNeeded();
+    }
+
+    async getValueOfSurgeryDate() :Promise<string> {
+      const value = await this.tab.innerText('button:below(label:has-text("surgery date"))');
+      return value
+   }
     // Trial Date Section - Patient Details ---------------------------------------
 
     // Medical Clearance Section - Patient Details ---------------------------------------
@@ -384,14 +426,21 @@ export default class PatientDetailPage extends TestComponent {
       await (await this.tab.waitForSelector(`button:below(label:has-text("education"))`)).scrollIntoViewIfNeeded();
     }
 
+    async waitForEducationCheckIcon() {
+      await (await this.tab.waitForSelector(`button:below(label:has-text("education")) [class*=styles_button--success]`)).scrollIntoViewIfNeeded();
+    }
+
     async clickEducationAddBtn() {
       await this.tab.click('button:below(label:has-text("education"))');
     }
 
     async waitForEducationPopUp() {
-      await this.tab.waitForSelector(`text=Set date`);
       await this.tab.waitForSelector(`text=BSC Rep`);
       await this.tab.waitForSelector(`text=Office`)
+    }
+
+    async waitForEducationPendingIcon() {
+      await this.tab.waitForSelector(`button:below(label:has-text("education")) [class*=styles_button--default]`);
     }
 
     async clickEducationSetDateBtn() {
@@ -409,6 +458,10 @@ export default class PatientDetailPage extends TestComponent {
     async getValueOfEducation() {
       const input = await this.tab.waitForSelector(`button:below(label:has-text("education"))`);
       return input.innerText()
+    }
+
+    async waitForEducationDatePicker() {
+      await (await this.tab.waitForSelector(".react-datepicker")).scrollIntoViewIfNeeded();
     }
 
     async waitForEducationCalendarIcon() {
@@ -453,12 +506,19 @@ export default class PatientDetailPage extends TestComponent {
       await (await this.tab.waitForSelector(`button:below(label:has-text("psych eval"))`)).scrollIntoViewIfNeeded();
     }
 
+    async waitForPsychEvalCheckIcon() {
+      await (await this.tab.waitForSelector(`button:below(label:has-text("psych eval")) [class*=styles_button--success]`)).scrollIntoViewIfNeeded();
+    }
+
+    async waitForPsychEvalFailedIcon() {
+      await (await this.tab.waitForSelector(`button:below(label:has-text("psych eval")) [class*=styles_button--failed]`)).scrollIntoViewIfNeeded();
+    }
+
     async clickPsychEvalAddBtn() {
       await this.tab.click('button:below(label:has-text("psych eval"))');
     }
 
     async waitForPsychEvalPopUp() {
-      await this.tab.waitForSelector(`text=Set date`);
       await this.tab.waitForSelector(`text=Mark Completed`);
       await this.tab.waitForSelector(`text=Mark Failed`)
     }
@@ -470,6 +530,11 @@ export default class PatientDetailPage extends TestComponent {
     async clickPsychEvalSetDateBtn() {
       await this.tab.click('span:has-text("Set date")');
     }
+
+    async getValueOfPsychEval() :Promise<string> {
+      const psych_eval = await this.tab.innerText('button:below(label:has-text("psych eval"))');
+      return psych_eval
+   }
     // Psych Eval Section Section - Patient Details ---------------------------------------
 
     // Pre Auth Section - Patient Details ---------------------------------------
@@ -481,12 +546,23 @@ export default class PatientDetailPage extends TestComponent {
       await (await this.tab.waitForSelector(`button:below(label:has-text("pre-auth"))`)).scrollIntoViewIfNeeded();
     }
 
+    async waitForPreAuthCheckIcon() {
+      await (await this.tab.waitForSelector(`button:below(label:has-text("pre-auth")) [class*=styles_button--success]`)).scrollIntoViewIfNeeded();
+    }
+
+    async waitForPreAuthFailedIcon() {
+      await (await this.tab.waitForSelector(`button:below(label:has-text("pre-auth")) [class*=styles_button--failed]`)).scrollIntoViewIfNeeded();
+    }
+
+    async waitForPreAuthPendingIcon() {
+      await this.tab.waitForSelector(`button:has-text("Pending")`);
+    }
+
     async clickPreAuthAddBtn() {
-      await this.tab.click('button:below(label:has-text("pre-auth"))');
+      await this.tab.click('#preauth');
     }
 
     async waitForPreAuthPopUp() {
-      await this.tab.waitForSelector(`text=Set date`);
       await this.tab.waitForSelector(`text=Mark Completed`);
       await this.tab.waitForSelector(`text=Denied`)
     }
@@ -569,6 +645,32 @@ export default class PatientDetailPage extends TestComponent {
     async waitForUnsaveWarningMessage() {
       await this.tab.waitForSelector('text=You have changed or entered information on this page')
     }
+    
+    async waitForWarningCard() {
+      await (
+        await this.tab.waitForSelector('[class*=styles_warning-card]')
+      ).scrollIntoViewIfNeeded();
+    }
+
+    async waitForScheduleBtnFromWanringPopup() {
+      await this.tab.waitForSelector(`[class*=styles_warning-card] button:has-text("Schedule")`)
+    }
+
+    async waitForCancelBtnFromWanringPopup() {
+      await this.tab.waitForSelector(`[class*=styles_warning-card] button:has-text("cancel")`)
+    }
+
+    async clickScheduleBtnFromWanringPopup() {
+      await this.tab.click(`[class*=styles_warning-card] button:has-text("Schedule")`)
+    }
+
+    async clickCancelBtnFromWanringPopup() {
+      await this.tab.click(`[class*=styles_warning-card] button:has-text("cancel")`)
+    }
+
+    async clickCloseFromDatePicker() {
+      await this.tab.click(`[class*=styles_date-popup__header] button`);
+    }
 
     async waitForPatientStage() {
       await (
@@ -583,6 +685,45 @@ export default class PatientDetailPage extends TestComponent {
 
     async setCreatedDate(date: string) {
       await this.tab.fill('input[id="patientCreatedDate"]', date);
-    }  
+    }
+
+    async fillPatentName(keyword: string) {
+      await this.tab.fill('input[id="patientName"]', keyword);
+    }
+
+    async clickAndUpdatePatientName(patientName: string){
+      await this.tab.click('#patientName')
+      await this.fillPatentName(patientName)// Press T on the keyboard just for Test， Change existing name， It won't save
+    }
+
+    async waitForZipLabel() {
+      await (
+        await this.tab.waitForSelector(`label:has-text("zip")`)
+      ).scrollIntoViewIfNeeded();
+    }
+
+    async waitForZipInput() {
+      await (
+        await this.tab.waitForSelector(`input[id="zip"]`)
+      ).scrollIntoViewIfNeeded();
+    }
+
+    async waitForZipInputErrorMessage() {
+      await (
+        await this.tab.waitForSelector(`text="please enter a valid zip"`)
+      ).scrollIntoViewIfNeeded();
+    }
+
+    async clickZiplabel() {
+      await this.tab.dblclick('label:has-text("zip")');
+    }
+
+    async clickZipAddBtn() {
+      await this.tab.click('button:below(label:has-text("zip"))');
+    }
+
+    async fillZip(keyword: string) {
+      await this.tab.fill('input[id="zip"]', keyword);
+    }
     
 }

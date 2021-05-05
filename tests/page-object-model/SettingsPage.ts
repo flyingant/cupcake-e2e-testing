@@ -89,7 +89,59 @@ export default class SettingsPage extends TestComponent {
     async clickUpload(){
         await this.tab.click(".MuiButton-label");
     }
-	async clickResendInviteBtnByEmail(email:string,){
+
+	  async clickResendInviteBtnByEmail(email:string,){
        await this.tab.click("//td[text()='"+email+"']/../td[5]/button") 
+    }
+
+    async clickDismissBtnFromSuccessfullyMessage() {
+      await this.tab.click(`.Toastify button[aria-label="delete"]`);
+    }
+
+    async waitForSaveSuccessfullyMessage() {
+      await this.tab.waitForSelector("text=Clinic name successfully updated", { state: 'visible' });
+    }
+
+    async waitForSaveSuccessfullyMessageGone() {
+      await this.tab.waitForSelector("text=Clinic name successfully updated", { state: 'hidden' });
+    }
+    
+    async waitForValidationError() {
+      await this.tab.waitForSelector("text=Min 3 characters are required", { state: 'visible' });
+    }
+
+    async waitForCloseIcon() {
+      await this.tab.waitForSelector(`button[aria-label="delete"]`, { state: 'visible' });
+    }
+
+    async clickCloseIcon() {
+      await this.tab.click(`button[aria-label="delete"]`);
+    }
+
+    async waitForLogoUploadScreen() {
+      await this.tab.waitForSelector(`.upload-logo`, { state: 'visible' });
+      await this.tab.waitForSelector(`text=Upload your logo`, { state: 'visible' });
+    }
+
+    async waitForBannerUploadScreen() {
+      await this.tab.waitForSelector(`.upload-logo`, { state: 'visible' });
+      await this.tab.waitForSelector(`text=Upload your banner`, { state: 'visible' });
+    }
+
+    async waitForLogoUploadIcon() {
+      await this.tab.waitForSelector(`img[alt="upload-icon"]`, { state: 'visible' });
+    }
+
+    async setUploadFile(filePath: string) {
+      let upload = await this.tab.$("input[type=file]");
+      await upload.setInputFiles(filePath);
+    }
+
+    async waitForLogoUploading() {
+      await this.tab.waitForSelector(`text=Uploading`, { state: 'visible' });
+    }
+
+    async waitForLogoUploadSuccessfullyMessageGone() {
+      await this.tab.waitForSelector("text=Logo uploaded successfully", { state: 'hidden' });
     }
 }

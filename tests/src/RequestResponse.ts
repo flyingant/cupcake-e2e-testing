@@ -49,7 +49,7 @@ export default class RequestResponse {
 
         let date = new Date();
         date.setTime(call.startTime);
-        process.stdout.write(date.toLocaleString() + "  " + call.url + " duration: " + call.duration + "\n")
+        process.stdout.write(`${date.toLocaleString()}  ${call.url}  ${call.method} duration: ${call.duration}\n`)
         return call;
     }
 

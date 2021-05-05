@@ -58,9 +58,9 @@ export default abstract class TestComponent {
 		process.stdout.write(`${new Date().toLocaleString()} ${msg}\n`)
 	}
 
-	async waitForText(text: string) {
-		this.log(`Wait for text "${text}"`)
-		return await this.tab.waitForSelector("text=" + text, {state: 'attached'});
+	async waitForText(text: string, timeout?: number) {
+		this.log(`Wait for text "${text}" timeout: ${timeout}`)
+		return await this.tab.waitForSelector("text=" + text, {state: 'attached', timeout});
 	}
 
 	async waitForTimeout(ms: number) {
@@ -68,8 +68,8 @@ export default abstract class TestComponent {
 		await this.tab.waitForTimeout(ms)
 	}
 
-	async waitForToast(text: string){
-		await this.waitForText(text=text);
+	async waitForToast(text: string, timeout?: number){
+		await this.waitForText(text=text, timeout);
 		// wait 3s for toast appear on screen
 		this.sleep(3000)
 	}

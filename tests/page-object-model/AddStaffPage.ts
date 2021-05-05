@@ -26,9 +26,9 @@ export default class AddStaffPage extends TestComponent {
         await this.tab.click('css=button[aria-label="delete"]')
     }
 
-    async clickAddButton() {
+    async clickAddButtonAndWaitForToast() {
         await this.tab.click("css=img[alt='add']");
-        await this.waitForToast("Invitation sent to")
+        await this.waitForToast(`Invitation sent to`, 60000)
         let page = new SettingsPage(this.tab);
         page.waitForMe();
         return page;

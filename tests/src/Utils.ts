@@ -17,4 +17,8 @@ export default class Utils {
 		return str;
 	}
 
+	static hhmmssOfNow(): string {
+		const now = new Date();
+		return `${now.getHours()<10 ? "0" : ""}${now.getHours()}${now.getMinutes()<10 ? "0" : ""}${now.getMinutes()}${now.getSeconds()<10 ? "0" : ""}${now.getSeconds()}`
+	}
 }

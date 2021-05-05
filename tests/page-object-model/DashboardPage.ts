@@ -1,4 +1,5 @@
 import TestComponent from './TestComponent';
+import { BrowserContext, Page, Request } from 'playwright';
 
 export default class DashboardPage extends TestComponent {
     css_patientFullName =  "[class*=styles_tableRow] [class*=styles_fullName]";
@@ -170,7 +171,8 @@ export default class DashboardPage extends TestComponent {
     }
 
     async selectFirstPatientFromList() {
-      await this.tab.click(`#stickyTableBody a`, {force: true});
+      const firstPatientHref = await this.tab.getAttribute('#stickyTableBody a', 'href');
+      await super.goto(`${firstPatientHref}`);
     }
 
     async waitForPatientList() {
@@ -178,8 +180,257 @@ export default class DashboardPage extends TestComponent {
       await element.scrollIntoViewIfNeeded();
     }
 
+    async waitForPatientListHeaderVisible() {
+      const element = await this.tab.waitForSelector("#stickyTableBody", {state: 'visible'})
+      await element.scrollIntoViewIfNeeded();
+    }
+
     async waitForSettingsAndLogoutOption() {
       await this.tab.waitForSelector('text=Settings');
       await this.tab.waitForSelector('text=Sign out');
+    }
+
+    async waitForSettingsAndLogoutOptionVisible() {
+      await this.tab.waitForSelector('text=Settings', { state: 'visible'});
+      await this.tab.waitForSelector('text=Sign out', { state: 'visible'});
+    }
+
+    async waitForClinicMetrics() {
+      await this.tab.waitForSelector('[class*=styles_SCSPipeline] [class*=styles_item] span:has-text("candidates")');
+      await this.tab.waitForSelector('[class*=styles_SCSPipeline] [class*=styles_item] span:has-text("Awaiting Trial")');
+      await this.tab.waitForSelector('[class*=styles_SCSPipeline] [class*=styles_item] span:has-text("In-trial")');
+      await this.tab.waitForSelector('[class*=styles_SCSPipeline] [class*=styles_item] span:has-text("Awaiting Surgery")');
+    }
+
+    async hoverPatient() {
+      await this.tab.hover('[class*=styles_tableRow] [class*=styles_fullName]');
+    }
+
+    async waitForPatient() {
+      await this.tab.waitForSelector('[class*=styles_tableRow] [class*=styles_psy]');
+      await this.tab.waitForSelector('[class*=styles_tableRow] [class*=styles_edu]');
+      await this.tab.waitForSelector('[class*=styles_tableRow] [class*=styles_auth]');
+    }
+
+    async waitForPatientFullName() { 
+      await this.tab.waitForSelector('[class*=styles_tableRow] [class*=styles_fullName]');
+    }
+
+    async waitForPatientStage() {
+      await this.tab.waitForSelector('[class*=styles_tableRow] [class*=styles_stage]');
+    }
+
+    async waitForPatientD2P() { 
+      await this.tab.waitForSelector('[class*=styles_tableRow] [class*=styles_d2p]');
+    }
+
+    async getValueOfSelectedPatientD2P():Promise<string> {
+      return await this.tab.innerText('[class*=styles_tableRow] [class*=styles_d2p]')
+    }
+
+    async waitForPatientD2T() {
+      await this.tab.waitForSelector(`[class*=styles_tableRow] [class*=styles_d2t]`);
+    }
+
+    async getValueOfSelectedPatientD2T():Promise<string> {
+      return await this.tab.innerText('[class*=styles_tableRow] [class*=styles_d2t]')
+    }
+
+    async waitForPatientTooltip() {
+      await this.tab.waitForSelector('text=IDENTIFIED');
+      await this.tab.waitForSelector('text=STAGE');
+      await this.tab.waitForSelector('text=D2T');
+      await this.tab.waitForSelector('text=D2P');
+      await this.tab.waitForSelector('text=NOTES');
+    }
+
+    async clickPSYIcon() {
+      await this.tab.hover("[class*=styles_tableRow] [class*=styles_psy] button");// hover the button first to avoid the failes from firefox
+      await this.tab.click("[class*=styles_tableRow] [class*=styles_psy] button");
+    }
+
+    async waitForPSYPopUp() {
+      await this.tab.waitForSelector(`text=Mark Completed`);
+      await this.tab.waitForSelector(`text=Mark Failed`)
+      await this.tab.waitForSelector(`text=Clear Entry`)
+    }
+
+    async hoverPSYIcon() {
+      await this.tab.hover("[class*=styles_tableRow] [class*=styles_psy]");
+    }
+
+    async waitForPSYTooltip() {
+      await this.tab.waitForSelector('text=Psych Eval');
+    }
+
+    async waitForEDULabel() {
+      await this.tab.waitForSelector("[class*=styles_tableRow] [class*=styles_edu]");
+    }
+    
+    async clickEDUIcon() {
+      await this.tab.hover("[class*=styles_tableRow] [class*=styles_edu] button"); // hover the button first to avoid the failes from firefox
+      await this.tab.click("[class*=styles_tableRow] [class*=styles_edu] button");
+    }
+
+    async waitForEDUPopUp() {
+      await this.tab.waitForSelector(`text=BSC Rep`);
+      await this.tab.waitForSelector(`text=Office`)
+    }
+
+    async hoverEDUIcon() {
+      await this.tab.hover("[class*=styles_tableRow] [class*=styles_edu]");
+    }
+
+    async waitForEDUTooltip() {
+      await this.tab.waitForSelector('text=Education');
+    }
+
+    async clickAuthIcon() {
+      await this.tab.hover("[class*=styles_tableRow] [class*=styles_auth] button"); // hover the button first to avoid the failes from firefox
+      await this.tab.click("[class*=styles_tableRow] [class*=styles_auth] button");
+    }
+
+    async waitForAUTHPopUp() {
+      await this.tab.waitForSelector(`text=Mark Completed`);
+      await this.tab.waitForSelector(`text=Denied`)
+      await this.tab.waitForSelector(`text=Clear Entry`)
+    }
+
+    async hoverAUTHIcon() {
+      await this.tab.hover("[class*=styles_tableRow] [class*=styles_auth]");
+    }
+
+    async waitForAUTHTooltip() {
+      await this.tab.waitForSelector('text=Pre-Auth');
+    }
+
+    async clickClearEntry() {
+      await this.tab.click('text=Clear Entry')
+    }
+
+    async waitForEmptySearchResultsMessage() {
+      await this.tab.waitForSelector(`text="Not seeing who you’re looking for?"`);
+    }
+
+    async waitForExpandSearchBtn() {
+      await this.tab.waitForSelector(`button:has-text("Expand search")`);
+    }
+
+    async clickExpandSearchBtn() {
+      await this.tab.click(`button:has-text("Expand search")`);
+    }
+
+    async waitForNoResultsMessage() {
+      await this.tab.waitForSelector(`text=No results`);
+    }
+
+    async waitForImplantDateScheduleBtn() {
+      await this.tab.waitForSelector(`[class*=styles_tableRow] [class*=styles_trial] span:has-text('Schedule')`);
+    }
+
+    async waitForTrialDateScheduleBtn() {
+      await this.tab.waitForSelector(`[class*=styles_tableRow] [class*=styles_trial] span:has-text('Schedule')`);
+    }
+
+    async waitForPERMDateScheduleBtn() {
+      await this.tab.waitForSelector(`[class*=styles_tableRow] [class*=styles_trial] span:has-text('Schedule')`);
+    }
+
+    async clickTrialDateScheduleBtn() {
+      await this.tab.hover(`[class*=styles_tableRow] [class*=styles_trial] button.MuiButton-root`);
+      await this.tab.dblclick(`[class*=styles_tableRow] [class*=styles_trial] button.MuiButton-root`, { force: true });
+    }
+
+    async clickPERMDateScheduleBtn() {
+      await this.tab.hover(`[class*=styles_tableRow] [class*=styles_trial] button.MuiButton-root`);
+      await this.tab.dblclick(`[class*=styles_tableRow] [class*=styles_trial] button.MuiButton-root`, { force: true });
+    }
+
+    async waitForDatePicker() {
+      await (await this.tab.waitForSelector(".react-datepicker")).scrollIntoViewIfNeeded();
+    }
+
+    async clickCloseFromDatePicker() {
+      await this.tab.click(`[class*=styles_date-popup__header] button`);
+    }
+
+    async clickSetFromDatePicker() {
+      await this.tab.click('#setDate');
+    }
+
+    async clickClearFromDatePicker() {
+      await this.tab.dblclick(`button:has-text("Clear")`);
+    }
+
+    async waitForPipeline() {
+      await (await this.tab.waitForSelector("[class*=styles_SCSPipeline]")).scrollIntoViewIfNeeded();
+    }
+
+    async clickCandidatesFromPipeline() {
+      await this.tab.click(`[class*=styles_SCSPipeline] [class*=styles_item] span:has-text("candidates")`);
+    }
+
+    async waitForCandidatesTitle() {
+      await this.tab.waitForSelector(`text=/^candidate Patients/i`);
+    }
+
+    async clickScheduleBtnFromWanringPopup() {
+      await this.tab.click(`[class*=styles_warning-card] button:has-text("Schedule")`)
+    }
+
+    async waitForEducationCheckIcon() {
+      await this.tab.waitForSelector(`[class*=styles_tableRow] [class*=styles_edu] [class*=styles_button--success]`);
+    }
+
+    async waitForEducationPendingIcon() {
+      await this.tab.waitForSelector(`[class*=styles_tableRow] [class*=styles_edu] [class*=styles_button--default]`);
+    }
+
+    async waitForPasychEvalCheckIcon() {
+      await this.tab.waitForSelector(`[class*=styles_tableRow] [class*=styles_psy] [class*=styles_button--success]`);
+    }
+
+    async waitForPasychEvalFailedIcon() {
+      await this.tab.waitForSelector(`[class*=styles_tableRow] [class*=styles_psy] [class*=styles_button--failed]`);
+    }
+
+    async waitForPasychEvalPendingIcon() {
+      await this.tab.waitForSelector(`[class*=styles_tableRow] [class*=styles_psy] [class*=styles_button--default]`);
+    }
+
+    async waitForPreAuthCheckIcon() {
+      await this.tab.waitForSelector(`[class*=styles_tableRow] [class*=styles_auth] [class*=styles_button--success]`);
+    }
+
+    async waitForPreAuthFailedIcon() {
+      await this.tab.waitForSelector(`[class*=styles_tableRow] [class*=styles_auth] [class*=styles_button--failed]`);
+    }
+
+    async waitForPreAuthPendingIcon() {
+      await this.tab.waitForSelector(`[class*=styles_tableRow] [class*=styles_auth] [class*=styles_button--default]`);
+    }
+    
+    async waitForAverageTimeToImplant() {
+      await this.tab.waitForSelector(`text="Avg. Days to Trial (D2T)"`);
+    }
+
+    async waitForAverageTimeToPERM() {
+      await this.tab.waitForSelector(`text="Avg. Days to perm (D2P)"`);
+    }
+
+    async waitForTotalImplants() {
+      await this.tab.waitForSelector(`text="TOTAL IMPLANTS TO DATE"`);
+    }
+
+    async clickCancelBtnFromWanringPopup() {
+      await this.tab.click(`[class*=styles_warning-card] button:has-text("cancel")`)
+    }
+
+    async waitForScheduleBtnFromWanringPopup() {
+      await this.tab.waitForSelector(`[class*=styles_warning-card] button:has-text("Schedule")`)
+    }
+
+    async waitForCancelBtnFromWanringPopup() {
+      await this.tab.waitForSelector(`[class*=styles_warning-card] button:has-text("cancel")`)
     }
 }

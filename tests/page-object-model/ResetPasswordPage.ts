@@ -18,7 +18,19 @@ export default class ResetPasswordPage extends TestComponent {
         await this.submit();
     }
 
+    async fillEmail(email: string) {
+      await this.setEmail(email);
+  }
+
     async clickIRememberedIt(){
         await this.tab.click("Never mind, I remembered it!");
+    }
+
+    async clickNeverMindBtn(){
+      await this.tab.click("[class*=styles_foterBtn]");
+  }
+
+    async waitForEmailValidateErrorMessage() {
+      await this.waitForText("Please enter a valid email address");
     }
 }

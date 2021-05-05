@@ -60,7 +60,7 @@ export default class AddPatientPage extends TestComponent {
     }
 
     async clickYesCancel() {
-        await this.tab.click("text='YES, CANCEL'");
+        await this.tab.click("text='Yes, cancel'");
     }
 
     async clickNextButton() {
@@ -165,9 +165,9 @@ export default class AddPatientPage extends TestComponent {
         return this.tab.innerText("//label[text()='Stage']/following::p")
     }
 
-	async clickAddPatientButton() {
-		await this.tab.click('text="Add Patient"')
-	}
+    async clickAddPatientButton() {
+      await this.tab.click('text="Add Patient"')
+    }
 
     async setPatientDetail(patient: Map<string, string>){
         for (let k of patient.keys()){
@@ -238,5 +238,11 @@ export default class AddPatientPage extends TestComponent {
         return patient
     }
 
-    
+    async clickCloseBtn() {
+      await this.tab.click(`button[aria-label="delete"]`);
+    }
+
+    async getGender() {
+      await page.getAttribute("input[name=gender]", "value")
+    }
 }

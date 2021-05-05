@@ -18,6 +18,7 @@ import AppConf from './AppConf';
 import CCTestClient from './CCTestClient';
 import RequestResponse from './RequestResponse';
 import Color from './Color'
+import Utils from './Utils';
 
 export default abstract class AbstractTestCase {
 	id: string;
@@ -70,7 +71,10 @@ export default abstract class AbstractTestCase {
 
 	addTestStep(name: string, jestClosure: () => Promise<void>) {
 		it(name, async () => {
-			expect(this.prevTestSucceed).toBe(true)
+			if(!this.prevTestSucceed) {
+				this.log("!!!! Previous test step failed. Skip this step.")
+				return
+			}
 			try {
 				await jestClosure()
 			} catch(testException) {
@@ -86,12 +90,23 @@ export default abstract class AbstractTestCase {
 			jest.setTimeout(parseInt(jestTimeout))
 		else
 			jest.setTimeout(90000);
-			
+
+		let timer
 		beforeAll(async () => {
 			await this.beforeAll();
+
+			const screenshotInterval = process.env.screenshot_interval
+			if(screenshotInterval) {
+				timer = setInterval(()=>{
+					this.tab.screenshot({
+						path:`${this.getSavePathAndFilePrefix()}-${Utils.hhmmssOfNow()}.png`
+					});		  
+				}, parseInt(screenshotInterval))
+			}
 		});
 
 		afterAll(async () => {
+			if(timer) clearInterval(timer)
 			await this.afterAll();
 		});
 
