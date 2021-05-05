@@ -238,5 +238,8 @@ export default class AddPatientPage extends TestComponent {
         return patient
     }
 
-    
+    async getGender() {
+      await page.getAttribute("input[name=gender]", "value")
+    }
+
 }
