@@ -47,7 +47,7 @@ class TestCase extends MockableTestCase {
         );
         await this.addPatientPage.clickNextButton();
         await this.addPatientPage.setTrialDate(trialDate);
-        const error = await this.tab.innerText("p:below(input[type=text])");
+        const error = await this.tab.innerText(".error-holder");
         expect(error).toBe("Please enter a valid date");
       }
     );
