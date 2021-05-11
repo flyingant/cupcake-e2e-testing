@@ -725,5 +725,10 @@ export default class PatientDetailPage extends TestComponent {
     async fillZip(keyword: string) {
       await this.tab.fill('input[id="zip"]', keyword);
     }
+	
+    async getPhone() {
+      let phone = await this.tab.getAttribute("input[id=phone]", "value");
+      return phone;
+    }
     
 }
