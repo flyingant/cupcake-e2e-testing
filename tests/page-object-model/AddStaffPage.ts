@@ -25,6 +25,10 @@ export default class AddStaffPage extends TestComponent {
     async clickCloseButton() {
         await this.tab.click('css=button[aria-label="delete"]')
     }
+    
+    async clickAddButton() {
+        await this.tab.click("css=img[alt='add']");
+    }
 
     async clickAddButtonAndWaitForToast() {
         await this.tab.click("css=img[alt='add']");
