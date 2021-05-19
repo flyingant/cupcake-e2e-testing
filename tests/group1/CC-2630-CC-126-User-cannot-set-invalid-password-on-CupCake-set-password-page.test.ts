@@ -1,21 +1,3 @@
-// 2630-126
-// 1
-// Go to Email
-// 2
-// Click on Activate Cupcake link
-// 3
-// Verify that on entering invalid password (less than 8 characters) 'Submit' button does not active and error message present on the page
-
-// 1234567
-// 4
-// Verify that on entering invalid password (8 or more characters without any number symbol) 'Submit' button does not active and error message present on the page
-
-// qwe#tyu
-// 5
-// Verify that on entering invalid password (8 or more characters without any special characters) 'Submit' button does not active and error message present on the page
-
-// qaz1wsx
-
 import MockableTestCase from "../src/MockableTestCase";
 
 // https://teamsolace.atlassian.net/browse/CC-2630
