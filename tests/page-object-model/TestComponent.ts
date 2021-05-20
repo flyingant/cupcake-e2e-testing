@@ -63,6 +63,11 @@ export default abstract class TestComponent {
 		return await this.tab.waitForSelector("text=" + text, {state: 'attached', timeout});
 	}
 
+  async waitForNoText(text: string, timeout?: number) {
+		this.log(`Wait for no text "${text}" timeout: ${timeout}`)
+		return await this.tab.waitForSelector("text=" + text, {state: 'hidden', timeout});
+	}
+
 	async waitForTimeout(ms: number) {
 		this.log(`Wait for timeout ${ms}`)
 		await this.tab.waitForTimeout(ms)

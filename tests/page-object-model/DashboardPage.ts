@@ -22,6 +22,10 @@ export default class DashboardPage extends TestComponent {
         await this.tab.waitForSelector(".dashboard");
     }
 
+    async waitforNameLogo() {
+      await this.tab.waitForSelector('.name-logo-holder');
+    }
+
     async hoverAvatarIcon(){
         await this.tab.hover('.title');
     }
@@ -142,7 +146,7 @@ export default class DashboardPage extends TestComponent {
 
     async setAuthDate(date?: string){
         await this.tab.click(this.css_auth)
-        await this.tab.click("'Set date'")
+        await this.tab.click("text='Set date'")
     }
 
     async clickTrial(){
@@ -386,6 +390,11 @@ export default class DashboardPage extends TestComponent {
       await this.tab.waitForSelector(`[class*=styles_tableRow] [class*=styles_edu] [class*=styles_button--default]`);
     }
 
+    async getEducationPendingIconSVG():Promise<string> {
+      const value = await this.tab.innerHTML(`[class*=styles_tableRow] [class*=styles_edu] [class*=styles_button--default]`);
+      return value;
+    }
+
     async waitForPasychEvalCheckIcon() {
       await this.tab.waitForSelector(`[class*=styles_tableRow] [class*=styles_psy] [class*=styles_button--success]`);
     }
@@ -396,6 +405,11 @@ export default class DashboardPage extends TestComponent {
 
     async waitForPasychEvalPendingIcon() {
       await this.tab.waitForSelector(`[class*=styles_tableRow] [class*=styles_psy] [class*=styles_button--default]`);
+    }
+
+    async getPasychEvalPendingIconSVG():Promise<string> {
+      const value = await this.tab.innerHTML(`[class*=styles_tableRow] [class*=styles_psy] [class*=styles_button--default]`);
+      return value;
     }
 
     async waitForPreAuthCheckIcon() {
@@ -433,4 +447,60 @@ export default class DashboardPage extends TestComponent {
     async waitForCancelBtnFromWanringPopup() {
       await this.tab.waitForSelector(`[class*=styles_warning-card] button:has-text("cancel")`)
     }
+
+    async getFirstPatientFromListName() {
+      const firstPatientName = await this.tab.innerText('#stickyTableBody a');
+      return firstPatientName;
+    }
+    
+    async clickCloseButton() {
+      await this.tab.click('css=button[aria-label="delete"]')
+    }
+
+    async clickPatientNameBtn() {
+      await this.tab.click('text="Patient Name"');
+    }
+
+    async clickPermBtn() {
+      await this.tab.click('text="Perm"');
+    }
+
+    async getFirstPerm() {
+      const firstPerm = await this.tab.innerText('[class*=styles_stageBtn__3qVCk] span');
+      return firstPerm;
+    }
+    
+    async clickAllStages() {
+      await this.tab.click("[class*=styles_filter-button] button");
+    }
+
+    async waitForAllStages() {
+      await this.tab.waitForSelector("[class*=MuiPaper-elevation3]");
+    }
+
+    async waitForHoverAwaitingTrial() {
+      await this.tab.hover("text='Awaiting Trial'");
+    }
+
+    async waitForHoverAwaitingSurgery() {
+      await this.tab.hover("text='Awaiting Surgery'");
+    }
+    async clickAllDoctors() {
+      await this.tab.click('text="All Doctors"');
+    }
+
+    async getDoctorName() {
+      const doctor = await this.tab.waitForSelector(`li:near(li:has-text("All Doctors"))`);
+      return doctor.innerText();
+    }
+
+    async clickOfText(text:string) {
+      await this.tab.click('text="'+text+'"');
+    }
+
+    async getNewPatientFromListName() {
+      const name = await this.tab.innerText('[class*=styles_tableRow--new] a');
+      return name;
+    }
+
 }

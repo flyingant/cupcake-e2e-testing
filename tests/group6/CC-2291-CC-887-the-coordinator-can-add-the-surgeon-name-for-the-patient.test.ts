@@ -1,22 +1,21 @@
 import MockableTestCase from "../src/MockableTestCase";
+import AppConf from '../src/AppConf';
 
 // https://teamsolace.atlassian.net/browse/CC-887
 class TestCase extends MockableTestCase {
-  fullname: string
   physicianList: string[]
 
   createTestSteps(): void {
     this.addTestStep('Login to Cupcake portal as a clinic coordinator', async () => {
       await this.homePage.start();
-      await this.loginPage.setEmailPasswordAndThenSubmit();
+      await this.loginPage.fillEmailAndPasswordWithoutDelay(AppConf.getStableAccountUsername(), AppConf.getStableAccountPassword());
       await this.dashboardPage.waitForMe();
     });
 
     this.addTestStep("Click on any name of patient from 'All SCS Patients' list", async () => {
-      this.fullname = await this.tab.innerText(this.dashboardPage.css_patientFullName);
-      await this.dashboardPage.searchByName(this.fullname);
-      await this.dashboardPage.hoverPatientName();
-      await this.dashboardPage.clickViewDetails();
+      await this.dashboardPage.searchByName(AppConf.getStablePatient('Test008'));
+      await this.dashboardPage.waitForPatientList();
+      await this.dashboardPage.selectFirstPatientFromList();
       await this.patientDetailPage.waitForMe();
     });
 

@@ -43,4 +43,4 @@ class TestCase extends MockableTestCase {
   }
 }
 
-new TestCase('CC-888', ``);
+new TestCase('CC-888', `Only US zip code on Patients Details can be entered and only 9 digits and 5 digits are accepted`);

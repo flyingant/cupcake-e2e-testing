@@ -13,9 +13,8 @@ class TestCase extends MockableTestCase {
       await this.loginPage.tab.keyboard.press("Tab");
       await this.loginPage.tab.keyboard.press("Tab");
       await this.loginPage.tab.keyboard.press("Tab");
-      await this.loginPage.tab.keyboard.press("Enter");
-      await this.resetPasswordPage.waitForMe()
-      await this.resetPasswordPage.tab.screenshot({path:'./tests/output/CC-121-step2-tab-to-forgot-password.png'});
+      await this.loginPage.clickForgotPassword();
+      await this.resetPasswordPage.waitForMe();
       await this.resetPasswordPage.tab.goBack()
     })
 

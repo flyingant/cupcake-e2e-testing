@@ -14,12 +14,12 @@ class TestCase extends MockableTestCase {
       await this.dashboardPage.waitForPatientList();
     });
     this.addTestStep(`Select any patient and open Patient details page`, async () => {
-      await this.dashboardPage.searchByName('Test008'); // in order to get the clean UI, use the stable data instead
+      await this.dashboardPage.searchByName('Test005'); // in order to get the clean UI, use the stable data instead
       await this.dashboardPage.waitForPatientList();
       await this.dashboardPage.selectFirstPatientFromList();
       await this.patientDetailPage.waitForMe();
     });
-    this.addTestStep(`Verify that 'Schedule' button is displayed on Implant date section if no date is set`, async () => {      
+    this.addTestStep(`Verify that 'Schedule' button is displayed on Implant date section if no date is set`, async () => {    
       await this.patientDetailPage.waitForImplantConsultScheduleBtn();
     });
   }

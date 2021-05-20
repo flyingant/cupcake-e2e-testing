@@ -1,5 +1,6 @@
 import { el } from 'date-fns/locale';
 import TestComponent from './TestComponent';
+import Utils from '../src/Utils';
 
 export default class PatientDetailPage extends TestComponent {
     css_patientName = "#patientName";
@@ -725,5 +726,65 @@ export default class PatientDetailPage extends TestComponent {
     async fillZip(keyword: string) {
       await this.tab.fill('input[id="zip"]', keyword);
     }
+
+    async waitForEmailLabel() {
+      await (
+        await this.tab.waitForSelector(`label:has-text("email")`)
+      ).scrollIntoViewIfNeeded();
+    }
+
+    async waitForEmailInput() {
+      await (
+        await this.tab.waitForSelector(`input[id="email"]`)
+      ).scrollIntoViewIfNeeded();
+    }
+
+    async waitForEmailInputErrorMessage() {
+      await (
+        await this.tab.waitForSelector(`text="please enter a valid email"`)
+      ).scrollIntoViewIfNeeded();
+    }
+
+    async clickEmaillabel() {
+      await this.tab.dblclick('label:has-text("email")');
+    }
+
+    async clickEmailAddBtn() {
+      await this.tab.click('button:below(label:has-text("email"))');
+    }
+
+    async fillEmail(keyword: string) {
+      await this.tab.fill('input[id="email"]', keyword);
+    }
+
+    async getPhone() {
+      let phone = await this.tab.getAttribute("input[id=phone]", "value");
+      return phone;
+    }
+
+    async getValueOfD2T() {
+      const input = await this.tab.innerText("#d2t");
+      return input;
+    }
+  
+    async CheckIsDate(createdDate: string,date:string) {
+      let days :number;
+      if(date != 'SCHEDULE'){
+        days = Utils.comparDate(createdDate,date);
+      }else{
+        days = Utils.comparDateToday(createdDate);
+      }
+      return days;
+    }
+
+    async getValueOfPipelineday () {
+      const input = await this.tab.innerText("h3");
+      const array =input.split(" ");
+      return array[1];
+    }
+
+    
+
+   
     
 }

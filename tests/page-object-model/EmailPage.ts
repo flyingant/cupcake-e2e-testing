@@ -1,5 +1,5 @@
 import TestComponent from './TestComponent';
-import { writeFileSync } from "fs";
+import { writeFileSync, mkdirSync, existsSync } from "fs";
 import * as path from 'path';
 
 export default class EmailPage extends TestComponent {
@@ -9,8 +9,12 @@ export default class EmailPage extends TestComponent {
     }
 
     async saveEmail(emailName: string, emailContent: string){
+        const dir = `./tests/output/`;
         let htmlContent = emailContent;
-        let filePath = `./tests/output/${browserName}-${emailName}.html`;
+        let filePath = `${dir}${browserName}-${emailName}.html`;
+        if (!existsSync(dir)) {
+          mkdirSync(dir); // make sure the target directory is exist
+        }
         writeFileSync(filePath, htmlContent);
         return path.resolve(filePath);
     }

@@ -31,4 +31,12 @@ export default class ActivatePage extends TestComponent {
     async clickYesExit(){
         await this.tab.click("'Yes, Exit'")
     }
+
+    async fillPassWord(value: string) {
+        await this.tab.fill("input", value);
+    }
+
+    async isSubmitButtonDisabled(){
+        return await this.tab.isDisabled(this.css_nextButton);
+    }
 }

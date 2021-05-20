@@ -62,6 +62,9 @@ export default class AddPatientPage extends TestComponent {
     async clickYesCancel() {
         await this.tab.click("text='Yes, cancel'");
     }
+    async clickNoContinue() {
+      await this.tab.click("text='No, continue'");
+  }
 
     async clickNextButton() {
         let input = await this.tab.waitForSelector('data-test-id=next-btn')
@@ -136,10 +139,6 @@ export default class AddPatientPage extends TestComponent {
         let inputs = await this.tab.$$("input");
         return await inputs[0].getAttribute("value");
     }
-
-	async waitForSummaryPage() {
-		await this.waitForText("Summary");
-	}
 
     async getSummaryName(){
         return this.tab.innerText("//label[text()='Name']/following::p")
@@ -245,4 +244,72 @@ export default class AddPatientPage extends TestComponent {
     async getGender() {
       await page.getAttribute("input[name=gender]", "value")
     }
+
+    async waitForPatientDetailsPage() {
+      await this.tab.waitForSelector("h2:has-text('Patient details')");
+    }
+
+    async waitForSCSJourneyPage() {
+      await this.tab.waitForSelector(`p:has-text("We'll set some important dates based on what stage this patient is at.")`);
+    }
+
+    async waitForTrialDatePage() {
+      await this.tab.waitForSelector(`h2:has-text("trial")`);
+    }
+
+    async waitForSummaryPage() {
+      await this.tab.waitForSelector(`h2:has-text("Summary")`);
+    }
+
+    async waitForExitWarningMessage() {
+      await this.tab.waitForSelector(`text=Are you sure you want to cancel? Any information you have entered will be lost.`);
+    }
+
+    async waitForNoneExitWarningMessage() {
+      await this.tab.waitForSelector(`text=Are you sure you want to cancel? Any information you have entered will be lost.`,{ state: 'hidden'});
+    }
+
+    async waitForBtnLight() {
+        await this.tab.waitForSelector(`button[data-test-id=next-btn]`);
+    }
+
+    async getFirstName(){
+        let firstName = await this.tab.$("[data-test-id=first_name] > div input");
+        return await firstName.getAttribute("value");
+    }
+
+    async getLastName(){
+        let lastName = await this.tab.$("[data-test-id=last_name] > div input");
+        return await lastName.getAttribute("value");
+    }
+
+    async getEmail(){
+        let email = await this.tab.$("[data-test-id=email] > div input");
+        return await email.getAttribute("value");
+    }
+
+    async getZipCode(){
+        let zipCode = await this.tab.$("[data-test-id=zip] > div input");
+        return await zipCode.getAttribute("value");
+    }
+
+    async waitForDatesError(){
+        await this.waitForText('Please enter a valid date');
+    }
+
+    async waitForDates(){
+        await this.tab.waitForSelector('#error-holder',{ state: 'hidden'});
+    }
+
+    async getPreviousYear(){
+        let today = new Date();
+        let year = today.getFullYear()-1;
+        let date = "0101"+year;
+        return date;
+    }
+    
+    async waitForBtnDisabled(){
+        await this.tab.waitForSelector(`button[data-test-id=next-btn][disabled]`);
+    }
+	
 }

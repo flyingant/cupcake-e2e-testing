@@ -2,7 +2,7 @@ import TestComponent from './TestComponent';
 
 export default class ResetPasswordPage extends TestComponent {
     async waitForMe() {
-        await this.waitForText("Reset password");
+        await this.tab.waitForSelector("text=Reset password");
     }
 
     async setEmail (email: string) {

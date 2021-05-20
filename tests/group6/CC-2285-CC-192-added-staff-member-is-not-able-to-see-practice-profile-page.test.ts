@@ -28,7 +28,7 @@ class TestCase extends MockableTestCase {
 
     this.addTestStep('Verify if user can access "Settings" page using top user icon dropdown', async () => {
       await this.dashboardPage.hoverAvatarIcon();
-      await this.tab.waitForSelector("'Settings'", {state: 'detached'})
+      await this.tab.waitForSelector(`text="Settings"`, {state: 'hidden'})
     });
   }
 }

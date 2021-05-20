@@ -28,7 +28,7 @@ export default class SettingsPage extends TestComponent {
     }
 
     async clickAddStaffButton() {
-        await this.tab.click('"ADD STAFF MEMBER"');
+        await this.tab.click('text="ADD STAFF MEMBER"');
     }
 
     async backToDashboard() {

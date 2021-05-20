@@ -1,12 +1,14 @@
 import MockableTestCase from "../src/MockableTestCase";
+import AppConf from '../src/AppConf';
 
 // https://teamsolace.atlassian.net/browse/CC-901
 class TestCase extends MockableTestCase {
   createTestSteps(): void {
     this.addTestStep('Login to Cupcake portal as a clinic coordinator', async () => {
       await this.homePage.start();
-      await this.loginPage.setEmailPasswordAndThenSubmit();
+      await this.loginPage.fillEmailAndPasswordWithoutDelay(AppConf.getStableAccountUsername(), AppConf.getStableAccountPassword());
       await this.dashboardPage.waitForMe();
+      await this.dashboardPage.waitForPatientList();
     });
 
     this.addTestStep("ciinic logo, clinic banner and clinic name are correctly placed and displayed", async () => {
